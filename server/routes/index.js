@@ -1,44 +1,30 @@
 const express = require("express");
 const router = express.Router();
+const {
+  index: findUsers,
+  show: findUser,
+  create: createUser,
+  update: updateUser,
+  destroy: deleteUser,
+} = require("../controllers/user");
+const { index: findCountries } = require("../controllers/country");
+const { index: findTeams } = require("../controllers/team");
+const { index: findPlayers } = require("../controllers/player");
 
-const todos = [
-  {
-    id: 1,
-    title: "Swimming",
-  },
-  {
-    id: 2,
-    title: "Eating",
-  },
-  {
-    id: 3,
-    title: "Running",
-  },
-];
+// User routes
+router.get("/users", findUsers);
+router.get("/user/:id", findUser);
+router.post("/users", createUser);
+router.patch("/user/:id", updateUser);
+router.delete("/user/:id", deleteUser);
 
-router.get("/todos", (req, res) => res.send({ data: todos }));
+// Country routes
+router.get("/countries", findCountries);
 
-router.get("/todo/:id", (req, res) => {
-  const { id } = req.params;
-  res.send({ data: todos[id - 1] });
-});
+// Team routes
+router.get("/teams", findTeams);
 
-router.post("/todos", (req, res) => {
-  const newTodo = req.body;
-  todos.push(newTodo);
-  res.send({ data: newTodo });
-});
-
-router.patch("/todo/:id", (req, res) => {
-  const { id } = req.params;
-  todos[id - 1] = { ...todos[id - 1], ...req.body };
-  res.send({ data: todos });
-});
-
-router.delete("/todo/:id", (req, res) => {
-  const { id } = req.params;
-  todos.splice(id - 1, 1);
-  res.send({ data: todos });
-});
+// Player routes
+router.get("/players", findPlayers);
 
 module.exports = router;
