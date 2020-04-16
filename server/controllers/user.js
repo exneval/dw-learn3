@@ -9,6 +9,15 @@ exports.index = async (req, res) => {
   }
 };
 
+exports.showUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ where: { id: req.user } });
+    res.send({ data: user });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 exports.show = async (req, res) => {
   try {
     const user = await User.findOne({ where: { id: req.params.id } });
