@@ -1,39 +1,44 @@
 import React, { Component } from "react";
-import "./App.css";
-import { API, setAuthToken } from "./config/api";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
+import Home from "./pages/home";
+import Article from "./pages/article";
+import Counter from "./pages/counter";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: null,
-    };
-  }
-
-  async componentDidMount() {
-    try {
-      setAuthToken(
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNTg3MDEzNDUzfQ.A7tNDHBUODHQ_WUWd8OLmE_fz-QCiBfz-3crAhkH39Y"
-      );
-      const user = await API.get("/user");
-      const { data } = user.data;
-      this.setState({ data });
-    } catch (error) {
-      if (error.code === "ECONNABORTED") {
-        console.log("Network Error!");
-      } else {
-        const { data, status } = error.response;
-        console.log(data.message, status);
-      }
-    }
-  }
-
   render() {
-    const { data } = this.state;
     return (
-      <div className="App">
-        <header className="App-header">{data && <p>{data.email}</p>}</header>
-      </div>
+      <Router>
+        <div>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/counter">Counter</Link>
+              </li>
+              <li>
+                <Link to="/article">Article</Link>
+              </li>
+            </ul>
+          </nav>
+
+          {/* A <Switch> looks through its children <Route>s and
+                    renders the first one that matches the current URL. */}
+          <Switch>
+            <Route path="/counter">
+              <Counter />
+            </Route>
+            <Route path="/article">
+              <Article />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
