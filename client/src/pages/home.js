@@ -7,7 +7,7 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: null,
+      value: "",
     };
   }
 
@@ -28,6 +28,7 @@ class Home extends Component {
     const { value } = this.state;
     return (
       <div>
+        {articles.isFail && <h1>Fail to create the article</h1>}
         {articles.data.length > 0 &&
           articles.data.map((article, index) => (
             <h1 key={index}>{article.title}</h1>
@@ -45,9 +46,14 @@ class Home extends Component {
         <form style={{ marginTop: 20 }} onSubmit={this.handleSubmit}>
           <label>
             Title:
-            <input type="text" value={value} onChange={this.handleChange} />
+            <input
+              style={{ marginRight: 20, marginLeft: 10 }}
+              type="text"
+              value={value}
+              onChange={this.handleChange}
+            />
           </label>
-          <input type="submit" value="Submit" />
+          <button type="submit">SAVE</button>
         </form>
       </div>
     );
